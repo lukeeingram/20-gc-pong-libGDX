@@ -6,11 +6,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.luke.pong.gameobjects.Player;
+import com.luke.pong.gameobjects.*;
 
 public class MyPongGame extends ApplicationAdapter {
 	float screenHeight, screenWidth;
-	float dt;
 	Player player;
 
 	@Override
@@ -18,7 +17,7 @@ public class MyPongGame extends ApplicationAdapter {
 		screenHeight = Gdx.graphics.getHeight();
 		screenWidth = Gdx.graphics.getWidth();
 
-		player = new Player();
+		player = new Player(20, 20, 25.0f, 100.0f, 200);
 
 		// Get keyboard input for specific presses.
 		Gdx.input.setInputProcessor(new InputAdapter() {
@@ -34,15 +33,15 @@ public class MyPongGame extends ApplicationAdapter {
 	@Override
 	public void render () {
 		ScreenUtils.clear(Color.BLACK);
-		dt = Gdx.graphics.getDeltaTime();
+		player.update();
 
 		// Render objects to the screen
-		player.render();
-
+		player.draw();
 	}
 
 	@Override
 	public void dispose () {
+		player.dispose();
 		Gdx.app.exit();
 	}
 }

@@ -1,66 +1,44 @@
 package com.luke.pong.gameobjects;
 
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.luke.pong.gameutils.GameConstants;
 
-public class Player extends ApplicationAdapter {
-    ShapeRenderer playerShape;
-    Rectangle playerRectangle;
-    float paddleWidth = 25.0f, paddleHeight = 25.0f;
-    float dt;
-    boolean moveUp, moveDown;
+public class Player {
+    private Rectangle playerRect;
+    private final float movementSpeed;
+    private ShapeRenderer shapeRenderer;
+    private float screenHeight;
+    private float screenWidth;
 
-    @Override
-    public void create() {
-        playerShape = new ShapeRenderer();
-        playerRectangle = new Rectangle(20.0f, 20.0f, paddleWidth, paddleHeight);
-
-        Gdx.input.setInputProcessor(new InputAdapter() {
-            @Override public boolean keyDown(int keycode) {
-                if (keycode == Input.Keys.UP) {
-                    moveUp = true;
-                }
-                if (keycode == Input.Keys.DOWN) {
-                    moveDown = true;
-                }
-                return true;
-            }
-
-            @Override public boolean keyUp(int keycode) {
-                if (keycode == Input.Keys.UP) {
-                    moveUp = false;
-                }
-                if (keycode == Input.Keys.DOWN) {
-                    moveDown = false;
-                }
-                return true;
-            }
-        });
+    public Player(float x, float y, float width, float height, float speed) {
+        playerRect = new Rectangle(x, y, width, height);
+        movementSpeed = speed;
+        shapeRenderer = new ShapeRenderer();
+        this.screenHeight = GameConstants.SCREEN_HEIGHT;
+        this.screenWidth = GameConstants.SCREEN_WIDTH;
     }
 
-    public void render() {
-        dt = Gdx.graphics.getDeltaTime();
-
-        playerShape.begin(ShapeRenderer.ShapeType.Filled);
-        playerShape.rect(playerRectangle.x, playerRectangle.y, playerRectangle.width, playerRectangle.height);
-        playerShape.end();
-
-        handleInput();
-    }
-
-    public void handleInput() {
-        float playerSpeed = 250.0f;
-        if (moveUp) {
-            playerRectangle.y += playerSpeed * dt;
+    public void update() {
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            playerRect.y += movementSpeed * Gdx.graphics.getDeltaTime();
         }
-        if (moveDown) {
-            playerRectangle.y -= playerSpeed * dt;
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            playerRect.y -= movementSpeed * Gdx.graphics.getDeltaTime();
         }
+        playerRect.y = MathUtils.clamp(playerRect.y, 0.0f, screenHeight - playerRect.height);
     }
 
-    @Override
+    public void draw() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.rect(playerRect.x, playerRect.y, playerRect.width, playerRect.height);
+        shapeRenderer.end();
+    }
+
     public void dispose() {
-
+        shapeRenderer.dispose();
     }
 }
