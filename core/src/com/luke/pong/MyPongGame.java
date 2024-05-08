@@ -9,14 +9,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.luke.pong.gameobjects.*;
 
 public class MyPongGame extends ApplicationAdapter {
-	float screenHeight, screenWidth;
 	Player player;
 
 	@Override
 	public void create () {
-		screenHeight = Gdx.graphics.getHeight();
-		screenWidth = Gdx.graphics.getWidth();
-
 		player = new Player(20, 20, 25.0f, 100.0f, 200);
 
 		// Get keyboard input for specific presses.
