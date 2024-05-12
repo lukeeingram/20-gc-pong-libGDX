@@ -18,7 +18,7 @@ public class Ball {
         ballRect = new Rectangle(x, y, width, height);
         ballSpeed = speed;
         shapeRenderer = new ShapeRenderer();
-        ballDirection = new Vector2(1, 0);
+        ballDirection = new Vector2(1, -1);
         this.screenHeight = GameConstants.SCREEN_HEIGHT;
         this.screenWidth = GameConstants.SCREEN_WIDTH;
     }
