@@ -1,5 +1,6 @@
 package com.luke.pong.gameobjects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
@@ -27,6 +28,13 @@ public class EnemyAI {
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 		shapeRenderer.rect(enemyRect.x, enemyRect.y, enemyRect.width, enemyRect.height);
 		shapeRenderer.end();
+	}
+	public void moveUp() {
+		enemyRect.y += movementSpeed * Gdx.graphics.getDeltaTime();
+	}
+
+	public void moveDown() {
+		enemyRect.y -= movementSpeed * Gdx.graphics.getDeltaTime();
 	}
 
 	public float getEnemyX() {

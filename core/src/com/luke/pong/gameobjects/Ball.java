@@ -18,7 +18,7 @@ public class Ball {
         ballRect = new Rectangle(x, y, width, height);
         ballSpeed = speed;
         shapeRenderer = new ShapeRenderer();
-        ballDirection = new Vector2(-1, 1);
+        ballDirection = new Vector2(1, 0);
         this.screenHeight = GameConstants.SCREEN_HEIGHT;
         this.screenWidth = GameConstants.SCREEN_WIDTH;
     }
@@ -49,6 +49,14 @@ public class Ball {
 
     public float getBallY() {
         return ballRect.y;
+    }
+
+    public float getBallWidth() {
+        return ballRect.width;
+    }
+
+    public float getBallHeight() {
+        return ballRect.height;
     }
 
     public void dispose() {
