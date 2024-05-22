@@ -9,16 +9,20 @@ import com.luke.pong.gameutils.GameConstants;
 
 public class Ball {
     private Rectangle ballRect;
-    private final float ballSpeed;
+    private float ballSpeed;
+    private float initialBallSpeed;
     private Vector2 ballDirection;
+    private Vector2 initialBallPos;
     private ShapeRenderer shapeRenderer;
     private float screenWidth, screenHeight;
 
     public Ball(float x, float y, float width, float height, float speed) {
         ballRect = new Rectangle(x, y, width, height);
         ballSpeed = speed;
+        initialBallSpeed = speed;
+        initialBallPos = new Vector2(x, y);
         shapeRenderer = new ShapeRenderer();
-        ballDirection = new Vector2(1, -1);
+        ballDirection = new Vector2(1, 1);
         this.screenHeight = GameConstants.SCREEN_HEIGHT;
         this.screenWidth = GameConstants.SCREEN_WIDTH;
     }
@@ -57,6 +61,18 @@ public class Ball {
 
     public float getBallHeight() {
         return ballRect.height;
+    }
+
+    public void increaseBallSpeed() {
+        ballSpeed *= 1.25;
+        System.out.println("Ball speed: " + ballSpeed);
+        ballSpeed = MathUtils.clamp(ballSpeed, ballSpeed, 1000.0f);
+    }
+
+    public void resetBall() {
+        ballSpeed = initialBallSpeed;
+        ballRect.x = initialBallPos.x;
+        ballRect.y = initialBallPos.y;
     }
 
     public void dispose() {

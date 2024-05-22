@@ -31,10 +31,12 @@ public class EnemyAI {
 	}
 	public void moveUp() {
 		enemyRect.y += movementSpeed * Gdx.graphics.getDeltaTime();
+		enemyRect.y = MathUtils.clamp(enemyRect.y, 0.0f, screenHeight - enemyRect.height);
 	}
 
 	public void moveDown() {
 		enemyRect.y -= movementSpeed * Gdx.graphics.getDeltaTime();
+		enemyRect.y = MathUtils.clamp(enemyRect.y, 0.0f, screenHeight - enemyRect.height);
 	}
 
 	public float getEnemyX() {
