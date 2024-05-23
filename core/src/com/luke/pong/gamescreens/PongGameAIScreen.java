@@ -1,6 +1,7 @@
 package com.luke.pong.gamescreens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -20,6 +21,8 @@ public class PongGameAIScreen extends ScreenAdapter {
 	EnemyScoreArea enemyScoreArea;
 	ScreenDivider divider;
 	Vector2 ballStartPos = new Vector2(GameConstants.SCREEN_WIDTH / 2, GameConstants.SCREEN_HEIGHT / 2);
+	Sound colSound;
+	Sound endSound;
 
 	public PongGameAIScreen(PongGame game) {
 		this.game = game;
@@ -31,6 +34,9 @@ public class PongGameAIScreen extends ScreenAdapter {
 		divider = new ScreenDivider();
 		playerScoreArea = new PlayerScoreArea();
 		enemyScoreArea = new EnemyScoreArea();
+		colSound = Gdx.audio.newSound(Gdx.files.internal("blip.wav"));
+		endSound = Gdx.audio.newSound(Gdx.files.internal("end_finish.wav"));
+
 	}
 
 	@Override
@@ -70,6 +76,7 @@ public class PongGameAIScreen extends ScreenAdapter {
 			ball.getBallY() <= player.getPlayerY() + player.getPlayerHeight()) {
 				ball.flipXDirection();
 				ball.increaseBallSpeed();
+				colSound.play(0.1f);
 		}
 	}
 
@@ -89,6 +96,7 @@ public class PongGameAIScreen extends ScreenAdapter {
 				ball.getBallY() <= enemy.getEnemyY() + enemy.getEnemyHeight()) {
 			ball.flipXDirection();
 			ball.increaseBallSpeed();
+			colSound.play(0.1f);
 		}
 	}
 
@@ -110,6 +118,7 @@ public class PongGameAIScreen extends ScreenAdapter {
 		// Trigger a game over
 		if (gameScore.getPlayerScore() >= 5 || gameScore.getEnemyScore() >= 5) {
 			game.setScreen(new GameOverScreen(game));
+			endSound.play(0.1f);
 		}
 	}
 
@@ -122,5 +131,7 @@ public class PongGameAIScreen extends ScreenAdapter {
 		enemyScoreArea.dispose();
 		divider.dispose();
 		gameScore.dispose();
+		endSound.dispose();
+		colSound.dispose();
 	}
 }
