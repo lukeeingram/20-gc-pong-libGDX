@@ -5,15 +5,13 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.luke.pong.gameobjects.*;
-import com.luke.pong.gamescoring.EnemyScoreArea;
-import com.luke.pong.gamescoring.PlayerScoreArea;
-import com.luke.pong.gamescoring.Scoring;
-import com.luke.pong.gameutils.GameConstants;
+import com.luke.pong.gamescoring.*;
+import com.luke.pong.gameutils.*;
 
-public class PongGameAIScreen extends ScreenAdapter {
+public class PongGame2PScreen extends ScreenAdapter {
 	PongGame game;
-	Player player;
-	EnemyAI enemy;
+	Player2P player;
+	Enemy2P enemy;
 	Ball ball;
 	Scoring gameScore;
 	PlayerScoreArea playerScoreArea;
@@ -21,11 +19,11 @@ public class PongGameAIScreen extends ScreenAdapter {
 	ScreenDivider divider;
 	Vector2 ballStartPos = new Vector2(GameConstants.SCREEN_WIDTH / 2, GameConstants.SCREEN_HEIGHT / 2);
 
-	public PongGameAIScreen(PongGame game) {
+	public PongGame2PScreen(PongGame game) {
 		this.game = game;
 
-		player = new Player(20, 20, 25.0f, 100.0f, 200.0f);
-		enemy = new EnemyAI(GameConstants.SCREEN_WIDTH - 40, GameConstants.SCREEN_HEIGHT / 2, 25.0f, 100.0f, 200.0f);
+		player = new Player2P(20, 20, 25.0f, 100.0f, 200.0f);
+		enemy = new Enemy2P(GameConstants.SCREEN_WIDTH - 40.0f, GameConstants.SCREEN_HEIGHT / 2, 25.0f, 100.0f, 200.0f);
 		ball = new Ball(ballStartPos.x, ballStartPos.y, 20.0f, 20.0f, 100.0f);
 		gameScore = new Scoring(0, 0);
 		divider = new ScreenDivider();
@@ -34,28 +32,26 @@ public class PongGameAIScreen extends ScreenAdapter {
 	}
 
 	@Override
-	public void render (float delta) {
+	public void render(float delta) {
 		ScreenUtils.clear(Color.BLACK);
 		player.update();
+		enemy.update();
 		ball.update();
 
-		// Render objects to the screen
+		// Render screen objects
 		player.draw();
-		ball.draw();
 		enemy.draw();
+		ball.draw();
 		gameScore.draw();
 		divider.draw();
 		playerScoreArea.draw();
 		enemyScoreArea.draw();
 
-		// Move the enemy paddle
-		handleEnemyMovement();
-
-		// Handle collisions with the paddles
+		// Handle collisions with paddles
 		checkPlayerCollision();
 		checkEnemyCollision();
 
-		// Handle scoring.
+		// Handle scoring
 		handleScoring();
 
 		// Go to the main menu if ESC is pressed
@@ -66,20 +62,10 @@ public class PongGameAIScreen extends ScreenAdapter {
 
 	public void checkPlayerCollision() {
 		if (ball.getBallX() <= player.getPlayerX() + player.getPlayerWidth() &&
-			ball.getBallY() >= player.getPlayerY() &&
-			ball.getBallY() <= player.getPlayerY() + player.getPlayerHeight()) {
-				ball.flipXDirection();
-				ball.increaseBallSpeed();
-		}
-	}
-
-	public void handleEnemyMovement() {
-		if (ball.getBallX() >= GameConstants.SCREEN_WIDTH / 2 && ball.getBallY() > enemy.getEnemyY()) {
-			enemy.moveUp();
-		}
-
-		if (ball.getBallX() >= GameConstants.SCREEN_WIDTH / 2 && ball.getBallY() < enemy.getEnemyY()) {
-			enemy.moveDown();
+				ball.getBallY() >= player.getPlayerY() &&
+				ball.getBallY() <= player.getPlayerY() + player.getPlayerHeight()) {
+			ball.flipXDirection();
+			ball.increaseBallSpeed();
 		}
 	}
 
@@ -92,8 +78,6 @@ public class PongGameAIScreen extends ScreenAdapter {
 		}
 	}
 
-	// Rough idea is that if the ball collides with the score areas, increase and display appropriate score
-	// then reset ball pos/speed
 	public void handleScoring() {
 		// Player
 		if (ball.getBallX() >= playerScoreArea.getX()) {
@@ -107,7 +91,7 @@ public class PongGameAIScreen extends ScreenAdapter {
 			ball.resetBall();
 		}
 
-		// Trigger a game over
+		// Game over
 		if (gameScore.getPlayerScore() >= 5 || gameScore.getEnemyScore() >= 5) {
 			game.setScreen(new GameOverScreen(game));
 		}
@@ -116,8 +100,8 @@ public class PongGameAIScreen extends ScreenAdapter {
 	@Override
 	public void dispose() {
 		player.dispose();
-		ball.dispose();
 		enemy.dispose();
+		ball.dispose();
 		playerScoreArea.dispose();
 		enemyScoreArea.dispose();
 		divider.dispose();

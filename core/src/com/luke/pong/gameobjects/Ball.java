@@ -65,7 +65,6 @@ public class Ball {
 
     public void increaseBallSpeed() {
         ballSpeed *= 1.25;
-        System.out.println("Ball speed: " + ballSpeed);
         ballSpeed = MathUtils.clamp(ballSpeed, ballSpeed, 1000.0f);
     }
 

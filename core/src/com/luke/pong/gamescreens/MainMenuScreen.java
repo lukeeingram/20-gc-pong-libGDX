@@ -8,7 +8,7 @@ import com.luke.pong.gameutils.GameConstants;
 
 public class MainMenuScreen extends ScreenAdapter {
 	PongGame game;
-	private Texture logo;
+	private final Texture logo;
 
 	public MainMenuScreen(PongGame game) {
 		this.game = game;
@@ -28,6 +28,10 @@ public class MainMenuScreen extends ScreenAdapter {
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_1)) {
 			game.setScreen(new PongGameAIScreen(game));
+		}
+
+		if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_2)) {
+			game.setScreen(new PongGame2PScreen(game));
 		}
 
 		if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE) || Gdx.input.isKeyJustPressed(Input.Keys.Q)) {

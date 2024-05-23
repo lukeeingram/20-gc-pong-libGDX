@@ -42,4 +42,9 @@ public class Scoring {
 	public int enemyScored() {
 		return enemyScore += 1;
 	}
+
+	public void dispose() {
+		font.dispose();
+		batch.dispose();
+	}
 }

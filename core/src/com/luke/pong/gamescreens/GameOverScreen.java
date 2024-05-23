@@ -27,5 +27,4 @@ public class GameOverScreen extends ScreenAdapter {
 			game.setScreen(new MainMenuScreen(game));
 		}
 	}
-
 }
